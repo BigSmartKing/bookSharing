@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/css">
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:replace="common/user_left">
+        </div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:replace="common/user_head"></div>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+                <div style="margin-left: 10%">
+                    <div>
+                        <div>
+                            <h2 th:text="${notice.noticeTitle}"></h2>
+                        </div>
+                        <div>
+                            <a id="back">返回</a>
+                        </div>
+                    </div>
+                    <h4 th:text="${#dates.format(notice.noticeTime, 'yyyy-MM-dd')}"></h4>
+                    <h5 th:text="${notice.noticeRead}">0</h5>
+                    <hr>
+                    <div>
+                        <p th:text="${notice.noticeContent}">
+                        </p>
+                    </div>
+                </div>
+        </main>
+        <!-- END 页面主要内容-->
+    </div>
+</div>
+
+</body>
+<!--js资源-->
+<div th:replace="common/js"></div>
+<script>
+    $("#back").click(function () {
+        $(location).attr('href', '/userNoticeList');
+    })
+</script>
+</html>

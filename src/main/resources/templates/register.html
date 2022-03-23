@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>首页 - 宠物(Light Year Admin)前台管理系统模板</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,前台模板,前台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/materialdesignicons.min.css" rel="stylesheet">
+<link href="../css/style.min.css" rel="stylesheet">
+</head>
+  
+<body>    
+   <main class="lyear-layout-content">
+      
+     <div class="card">
+       <div class="card-header"><h4>注册信息</h4></div>
+       <div class="card-body">
+         
+         <form class="form-horizontal">
+           <div class="form-group">
+             <label class="col-md-3 control-label">学号或工号</label>
+             <div class="col-md-7">
+               <input class="form-control" type="text" id="userName" name="userName" placeholder="请输入学号/工号..">
+             </div>
+           </div>
+
+			 <div class="form-group">
+				 <label class="col-md-3 control-label">电话</label>
+				 <div class="col-md-7">
+					 <input class="form-control" type="text" id="userTell" name="userTell" placeholder="请输入手机号..">
+				 </div>
+			 </div>
+
+   		   <div class="form-group">
+   		     <label class="col-md-3 control-label">性别</label>
+   		     <div class="example-box">
+   		       <label class="lyear-radio radio-inline radio-primary">
+   		         <input type="radio" name="userSex" value="0"><span>男</span>
+   		       </label>
+   		       <label class="lyear-radio radio-inline radio-primary">
+   		         <input type="radio" name="userSex" value="1"><span>女</span>
+   		       </label>
+   		     </div>
+   		   </div>
+
+			 <div class="form-group">
+				 <label class="col-md-3 control-label">密码</label>
+				 <div class="col-md-7">
+					 <input class="form-control" type="password" id="userPwd" name="userPwd" placeholder="请输入密码..">
+				 </div>
+			 </div>
+   		   
+           <div class="form-group">
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label">选择框</label>
+                    <div class="col-xs-7">
+                      <select class="form-control" id="userCategory" name="userCategory" size="1">
+                        <option value="0">中医学院·中西医结合学院</option>
+                        <option value="1">药学院</option>
+                        <option value="2">医学院·整合医学学院</option>
+                        <option value="3">继续教育学院</option>
+						<option value="4">针灸推拿学院·养生康复学院</option>
+						<option value="5">护理学院</option>
+						<option value="6">卫生经济管理学院</option>
+						<option value="7">人工智能与信息技术学院</option>
+						<option value="8">马克思主义学院·医学人文学院</option>
+						<option value="9">养老服务与管理学院</option>
+						<option value="10">公共外语教学部</option>
+						<option value="11">体育部</option>
+						<option value="12">第一临床医学院</option>
+						<option value="13">翰林学院</option>
+						<option value="14">国际经方学院</option>
+                      </select>
+                    </div>
+                  </div>
+           </div>
+           <div class="form-group">
+             <div class="col-md-9 col-md-offset-3">
+               	<button class="btn btn-primary" type="button" id="b01">提交</button>
+   			  	 <button class="btn btn-primary" type="reset">重置</button>
+				 <a class="btn btn-primary" href="/">取消</a>
+
+			 </div>
+           </div>
+         </form>
+       </div>
+     </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="../js/main.min.js"></script>
+<script type="text/javascript">
+	$('#b01').click(function(){
+		$.ajax({
+			type: "POST",
+			url: "/register",
+			data: {userName:$("#userName").val(),userPwd:$("#userPwd").val(),userTell:$("#userTell").val(),
+				userSex:$("input[name='userSex']:checked").val(),userCategory:$("#userCategory").val()
+			},
+			dataType: "json",
+			success:function(data){  //回调函数：数据请求成功之后调用
+				alert("恭喜您，注册成功，现在可以登录啦！");
+				$(location).attr('href', '/');
+			}
+			,
+			error:function(){
+				alert("注册失败，请重试!");
+			}
+		});
+	})
+</script>
+
+</body>
+</html>

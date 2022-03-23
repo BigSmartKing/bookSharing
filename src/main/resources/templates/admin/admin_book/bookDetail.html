@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<title>图书详情</title>
+		<link rel="icon" href="favicon.ico" type="image/ico">
+		<link href="../../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../css/materialdesignicons.min.css" rel="stylesheet">
+		<link href="../../css/style.min.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+                <!--左侧导航-->
+                <div th:replace="common/admin_left">
+                </div>
+                <!--End 左侧导航-->
+
+                <!--头部信息-->
+                <div th:replace="common/admin_head"></div>
+                <!--End 头部信息-->
+
+<!--main 开始-->
+<!--页面主要内容-->
+		<main class="lyear-layout-content">
+		<div class="container-fluid">
+                <h5><code>图书信息</code></h5>
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                      <td>ISBN</td>
+                      <td><input th:value="${book.isbn}" disabled></td>
+                    </tr>
+					<tr>
+						<td>图书ID</td>
+						<td><input th:value="${book.bookId}" id="bookId" name="bookId" disabled></td>
+					</tr>
+					<tr>
+					  <td>作者</td>
+						<td><input th:value="${book.bookAuthor}" disabled></td>
+					</tr>
+					<tr>
+					  <td>共享人</td>
+						<td><input th:value="${book.userName}" disabled></td>
+					</tr>
+					<tr>
+						<td>共享人编号</td>
+						<td><input th:value="${book.bookOwner}" name="userId" id="userId" disabled></td>
+					</tr>
+                    <!--
+					<tr>
+					  <td>数量</td>
+						<td><input th:value="${book.bookCount}" disabled></td>
+					</tr>
+					-->
+					<tr>
+						<td>描述</td>
+						<td><input th:value="${book.bookDetail}" disabled></td>
+					</tr>
+					<tr>
+						<td>联系方式</td>
+						<td><input th:value="${book.userTell}" disabled></td>
+					</tr>
+					<tr>
+						<td>图书位置</td>
+						<td><input th:value="${book.bookLocation}" disabled></td>
+					</tr>
+                  </tbody>
+                </table>
+</div>
+</main>
+<!--main 结束-->
+
+	</div>
+	</div>
+        <!--js资源-->
+        <div th:replace="common/js"></div>
+	</body>
+</html>

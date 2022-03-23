@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>公告</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="../../css/style.min.css" rel="stylesheet">
+    <script src="../../ckeditor/ckeditor.js"></script>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <div th:replace="common/user_left"></div>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <div th:replace="common/user_head"></div>
+        <!--End 头部信息-->
+
+        <main class="lyear-layout-content" id="noticeListId">
+
+            <div class="card">
+                <div class="card-body">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>编号</th>
+                                        <th>公告Id</th>
+                                        <th>标题</th>
+                                        <th>时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="notice,itemStat:${pageInfo.list}">
+                                        <td th:text="${itemStat.count}"></td>
+                                        <td th:text="${notice.noticeId}"></td>
+                                        <td> <a th:text="${notice.noticeTitle}" th:href="@{/noticeDetail(noticeId=${notice.noticeId})}"></a> </td>
+                                        <td th:text="${#dates.format(notice.noticeTime, 'yyyy-MM-dd')}"></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn btn-xs btn-default" th:href="@{/noticeDetail(noticeId=${notice.noticeId})}" title="查看" data-toggle="tooltip"><i class="mdi mdi-pencil"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <nav>
+                                <ul class="pager">
+                                    <p>当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span th:text="${pageInfo.pages}"></span> 页,共 <span th:text="${pageInfo.total}"></span> 条记录</p>
+                                    <li><a th:href="@{/userNoticeList}">首页</a></li>
+                                    <li><a th:href="@{/userNoticeList(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a></li>
+                                    <li><a th:href="@{/userNoticeList(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a></li>
+                                    <li><a th:href="@{/userNoticeList(pageNum=${pageInfo.pages})}">尾页</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                </div>
+
+            </div>
+    </div>
+
+</div>
+
+</main>
+<!--End 页面主要内容-->
+    </div>
+</div>
+
+<div th:replace="common/js"></div>
+
+</body>
+</html>

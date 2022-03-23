@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/css">
+</head>
+
+<body>
+<div class="lyear-layout-web">
+	<div class="lyear-layout-container">
+		<!--左侧导航-->
+		<div th:replace="common/user_left">
+		</div>
+		<!--End 左侧导航-->
+
+		<!--头部信息-->
+		<div th:replace="common/user_head"></div>
+		<!--End 头部信息-->
+
+		<!--页面主要内容-->
+		<main class="lyear-layout-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+										<tr>
+											<th>编号</th>
+											<th>共享人Id</th>
+											<th>ISBN</th>
+											<th>书名</th>
+											<th>取书地点</th>
+											<th>租赁日期</th>
+											<th>还书日期</th>
+											<th>进度</th>
+											<!--<th>状态</th>-->
+											<th>操作</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr th:each="book,itemStat: ${pageInfo.list}">
+											<td th:text="${itemStat.count}"></td>
+											<td th:text="${book.bookOwner}"></td>
+											<td th:text="${book.isbn}"></td>
+											<td>《<b th:text="${book.bookName}"></b>》</td>
+											<td th:text="${book.bookLocation}"></td>
+											<td th:text="${#dates.format(book.rentBeginDate, 'yyyy-MM-dd')}"></td>
+											<td th:text="${#dates.format(book.rentFinishDate, 'yyyy-MM-dd')}"></td>
+											<td th:switch="${book.rentStatue}">
+												<font th:case="0" class="text-success">在租</font>
+												<font th:case="1" class="text-danger">归还提交</font>
+											</td>
+											<!--<td th:switch="${book.rentExpire}">
+												<font th:case="0" class="text-success">正常</font>
+												<font th:case="1" class="text-danger">违约</font>
+											</td>-->
+											<td>
+												<!--<a  th:onclick="'javascript:bookReturn(\''+[[${book.bookId}]]+'\',\''+[[${book.rentId}]]+'\');'" ></a> -->
+												<a class="btn btn-xs btn-default" href="#" th:data-t_id="${book.bookId}" th:data-t_rent="${book.rentId}" data-toggle="tooltip" title="还书"
+												   th:onclick="bookReturn(this.getAttribute('data-t_id'),this.getAttribute('data-t_rent'))"><i class="mdi mdi-flip-to-back"></i></a>
+
+											</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<nav>
+									<ul class="pager">
+										<p>当前 <span th:text="${pageInfo.pageNum}"></span> 页,总 <span th:text="${pageInfo.pages}"></span> 页,共 <span th:text="${pageInfo.total}"></span> 条记录</p>
+										<li><a th:href="@{/selectBookList}">首页</a></li>
+										<li><a th:href="@{/selectBookList(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a></li>
+										<li><a th:href="@{/selectBookList(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a></li>
+										<li><a th:href="@{/selectBookList(pageNum=${pageInfo.pages})}">尾页</a></li>
+									</ul>
+
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- END 页面主要内容-->
+
+	</div>
+</div>
+
+</body>
+<!--js资源-->
+<div th:replace="common/js"></div>
+<script type="text/javascript">
+	function selectByCategoryId(id){
+			//点击确定后操作
+			var categoryId = id
+		$(location).attr('href', '/selectBookByCategory?categoryId='+categoryId);
+	}
+</script>
+
+<script type="text/javascript">
+	//归还图书
+	function bookReturn(bookId,rentId){
+		$.ajax({
+			type: "POST",
+			url: "/bookReturn",
+			data: {
+				bookId:bookId,
+				rentId:rentId
+			},
+			dataType: "json",
+			success:function(data){  //回调函数：数据请求成功之后调用
+				alert("提交成功");
+				// 准备前往我的租赁列表
+				$(location).attr('href', '/myRentList');
+			}
+			,
+			error:function(){
+				alert("提交失败，请重试!");
+			}
+		});
+
+	}
+</script>
+</html>

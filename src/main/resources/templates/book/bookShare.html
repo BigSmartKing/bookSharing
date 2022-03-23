@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="common/css"></th:block>
+		<title>图书分享</title>
+	</head>
+
+	<body>
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+                <!--左侧导航-->
+                <div th:replace="common/user_left">
+                </div>
+                <!--End 左侧导航-->
+
+                <!--头部信息-->
+                <div th:replace="common/user_head"></div>
+                <!--End 头部信息-->
+
+<!--main 开始-->
+<!--页面主要内容-->
+		<main class="lyear-layout-content">
+		<div class="container-fluid">
+                <h5><code>图书信息</code></h5>
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                      <td>ISBN</td>
+                      <td th:text="${book.isbn}"></td>
+                    </tr>
+					<tr>
+					  <td>作者</td>
+					  <td th:text="${book.bookAuthor}"></td>
+					</tr>
+					<tr>
+					  <td>共享人</td>
+					  <td th:text="${book.userName}"></td>
+					</tr>
+					<tr>
+					  <td>数量</td>
+					  <td th:text="${book.bookCount}"></td>
+					</tr>
+					<tr>
+						<td>描述</td>
+						<td th:text="${book.bookDetail}"></td>
+					</tr>
+					<tr>
+						<td>联系方式</td>
+						<td th:text="${book.userTell}"></td>
+					</tr>
+					<tr>
+						<td>图书位置</td>
+						<td th:text="${book.bookLocation}"></td>
+					</tr>
+					<tr th:switch="${session.currentUser.userCredit}">
+						<td th:case="1"><button class="btn-success center-block"><a href="/rentBook" style="color: white;">我要租赁</a></button></td>
+						<td th:case="0">存在违章记录<button class="warning">无</button> </td>
+						<td><a href="/selectBookList" class="btn-success center-block">返回</a> </td>
+					</tr>
+                  </tbody>
+                </table>
+
+</div>
+</main>
+<!--main 结束-->
+
+	</div>
+	</div>
+        <!--js资源-->
+        <div th:replace="common/js"></div>
+	</body>
+
+</html>

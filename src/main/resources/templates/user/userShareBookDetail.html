@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<title>首页 - 光年(Light Year Admin)后台管理系统模板</title>
+		<link rel="icon" href="favicon.ico" type="image/ico">
+		<meta name="author" content="yinqi">
+		<link href="../../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../css/materialdesignicons.min.css" rel="stylesheet">
+		<link href="../../css/style.min.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+                <!--左侧导航-->
+                <div th:replace="common/user_left">
+                </div>
+                <!--End 左侧导航-->
+
+                <!--头部信息-->
+                <div th:replace="common/user_head"></div>
+                <!--End 头部信息-->
+
+				<main class="lyear-layout-content">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-header"><h4>图书上传</h4></div>
+							<div class="card-body">
+
+								<form class="form-horizontal">
+									<div class="form-group">
+										<label class="col-md-3 control-label">图书ID</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" id="bookId" name="bookId" th:value="${book.bookId}" disabled>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">ISBN</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" id="isbn" name="isbn" th:value="${book.isbn}">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">书名</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" id="bookName" name="bookName" th:value="${book.bookName}">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">作者</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" id="bookAuthor" name="bookAuthor" th:value="${book.bookAuthor}">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">取书位置</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" id="bookLocation" name="bookLocation" th:value="${book.bookLocation}">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-3 control-label">描述</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" id="bookDetail" name="bookDetail" th:value="${book.bookDetail}">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">图书数量</label>
+										<div class="col-md-7">
+											<input class="form-control" type="text" id="bookCount" name="bookCount" th:value="${book.bookCount}">
+										</div>
+									</div>
+
+									<!-- 考虑使用动态查询 2022年1月11日   -->
+									<div class="form-group">
+										<label>按类别搜索</label>
+										<div class="col-xs-12">
+											<select class="form-control" id="bookCategoryId" name="bookCategoryId" size="1" onchange="selectByCategoryId(this.options[this.options.selectedIndex].value)">
+												<th:block th:each="categories,itemStat: ${session.categoryList}">
+													<option th:value="${categories.categoryId}" th:text="${categories.categoryName}"></option>
+												</th:block>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-md-9 col-md-offset-3">
+											<button class="btn btn-primary" type="button" id="shareBookUpdateSubmit">确定修改</button>
+											<button class="btn btn-dark" type="reset">取消</button>
+										</div>
+									</div>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</main>
+
+	</div>
+	</div>
+        <!--js资源-->
+        <div th:replace="common/js"></div>
+	</body>
+	<script type="text/javascript">
+		$("#shareBookUpdateSubmit").click(function () {
+			$.ajax({
+				type: "POST",
+				url: "/updateBook",
+				data: {
+					isbn:$("#isbn").val(),
+					bookName:$("#bookName").val(),
+					bookAuthor:$("#bookAuthor").val(),
+					bookLocation:$("#bookLocation").val(),
+					bookDetail:$("#bookDetail").val(),
+					bookCount:$("#bookCount").val(),
+					bookCategoryId:$("#bookCategoryId").val(),
+					bookId:$("#bookId").val(),
+
+				},
+				dataType: "json",
+				success:function(data){  //回调函数：数据请求成功之后调用
+					alert("修改成功");
+					// 准备前往我的分享列表
+					$(location).attr('href', '/myShareBookList');
+				}
+				,
+				error:function(){
+					alert("修改失败，请重试!");
+				}
+			});
+		})
+	</script>
+
+</html>

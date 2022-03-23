@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/css">
+</head>
+
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <div th:replace="common/admin_left">
+    </div>
+    <!--End 左侧导航-->
+
+    <!--头部信息-->
+    <div th:replace="common/admin_head"></div>
+    <!--End 头部信息-->
+
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card bg-primary">
+              <div class="card-body clearfix">
+                <div class="pull-right">
+                  <p class="h6 text-white m-t-0">今日注册人数</p>
+                  <p class="h3 text-white m-b-0 fa-1-5x">[[${registerUserCount}]]</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account-star fa-1-5x"></i></span> </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <div class="card bg-danger">
+              <div class="card-body clearfix">
+                <div class="pull-right">
+                  <p class="h6 text-white m-t-0">用户总数</p>
+                  <p class="h3 text-white m-b-0 fa-1-5x">[[${userCount}]]</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account fa-1-5x"></i></span> </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <div class="card bg-success">
+              <div class="card-body clearfix">
+                <div class="pull-right">
+                  <p class="h6 text-white m-t-0">图书租赁量</p>
+                  <p class="h3 text-white m-b-0 fa-1-5x">[[${rentCount}]]</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-arrow-down-bold fa-1-5x"></i></span> </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <div class="card bg-purple">
+              <div class="card-body clearfix">
+                <div class="pull-right">
+                  <p class="h6 text-white m-t-0">新增图书上传</p>
+                  <p class="h3 text-white m-b-0 fa-1-5x">[[${addBookCount}]]</p>
+                </div>
+                <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-upload fa-1-5x"></i></span> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>每周用户</h4>
+              </div>
+              <div class="card-body">
+                <canvas class="js-chartjs-bars"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header">
+                <h4>图书交易历史记录</h4>
+              </div>
+              <div class="card-body">
+                <canvas class="js-chartjs-lines"></canvas>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+    <!-- END 页面主要内容-->
+
+  </div>
+</div>
+<div hidden>
+  <input th:value="${userAddCount_0}" id="userAddCount_0">
+  <input th:value="${userAddCount_1}" id="userAddCount_1">
+  <input th:value="${userAddCount_2}" id="userAddCount_2">
+  <input th:value="${userAddCount_3}" id="userAddCount_3">
+  <input th:value="${userAddCount_4}" id="userAddCount_4">
+  <input th:value="${userAddCount_5}" id="userAddCount_5">
+  <input th:value="${userAddCount_6}" id="userAddCount_6">
+
+  <input th:value="${rentBookAddCount_0}" id="rentBookAddCount_0">
+  <input th:value="${rentBookAddCount_1}" id="rentBookAddCount_1">
+  <input th:value="${rentBookAddCount_2}" id="rentBookAddCount_2">
+  <input th:value="${rentBookAddCount_3}" id="rentBookAddCount_3">
+  <input th:value="${rentBookAddCount_4}" id="rentBookAddCount_4">
+  <input th:value="${rentBookAddCount_5}" id="rentBookAddCount_5">
+  <input th:value="${rentBookAddCount_6}" id="rentBookAddCount_6">
+
+</div>
+<!--js资源-->
+<div th:replace="common/js"></div>
+<!--图表插件-->
+<script type="text/javascript" src="js/Chart.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(e) {
+    var $dashChartBarsCnt  = jQuery( '.js-chartjs-bars' )[0].getContext( '2d' ),
+            $dashChartLinesCnt = jQuery( '.js-chartjs-lines' )[0].getContext( '2d' );
+
+    var $dashChartBarsData = {
+      labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      datasets: [
+        {
+          label: '注册用户',
+          borderWidth: 1,
+          borderColor: 'rgba(0,0,0,0)',
+          backgroundColor: 'rgba(51,202,185,0.5)',
+          hoverBackgroundColor: "rgba(51,202,185,0.7)",
+          hoverBorderColor: "rgba(0,0,0,0)",
+          data: [
+                  $("#userAddCount_1").val(), $("#userAddCount_2").val(),$("#userAddCount_3").val(), $("#userAddCount_4").val(),
+                  $("#userAddCount_5").val(), $("#userAddCount_6").val(), $("#userAddCount_7").val()]
+        }
+      ]
+    };
+    var $dashChartLinesData = {
+      labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      datasets: [
+        {
+          label: '图书租赁数量',
+          data: [$("#rentBookAddCount_0").val(),
+            $("#rentBookAddCount_1").val(),
+            $("#rentBookAddCount_2").val(),
+            $("#rentBookAddCount_3").val(),
+            $("#rentBookAddCount_4").val(),
+            $("#rentBookAddCount_5").val(),
+            $("#rentBookAddCount_6").val()],
+          borderColor: '#358ed7',
+          backgroundColor: 'rgba(53, 142, 215, 0.175)',
+          borderWidth: 1,
+          fill: false,
+          lineTension: 0.5
+        }
+      ]
+    };
+
+    new Chart($dashChartBarsCnt, {
+      type: 'bar',
+      data: $dashChartBarsData
+    });
+
+    var myLineChart = new Chart($dashChartLinesCnt, {
+      type: 'line',
+      data: $dashChartLinesData,
+    });
+  });
+</script>
+</body>
+</html>

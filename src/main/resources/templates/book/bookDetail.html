@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<title>首页 - 光年(Light Year Admin)后台管理系统模板</title>
+		<link rel="icon" href="favicon.ico" type="image/ico">
+		<meta name="author" content="yinqi">
+		<link href="../../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../css/materialdesignicons.min.css" rel="stylesheet">
+		<link href="../../css/style.min.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+                <!--左侧导航-->
+                <div th:replace="common/user_left">
+                </div>
+                <!--End 左侧导航-->
+
+                <!--头部信息-->
+                <div th:replace="common/user_head"></div>
+                <!--End 头部信息-->
+
+<!--main 开始-->
+<!--页面主要内容-->
+		<main class="lyear-layout-content">
+		<div class="container-fluid">
+                <h5><code>图书信息</code></h5>
+                <table class="table table-hover">
+                  <tbody>
+                    <tr>
+                      <td>ISBN</td>
+                      <td><input th:value="${book.isbn}" disabled></td>
+                    </tr>
+					<tr>
+						<td>图书ID</td>
+						<td><input th:value="${book.bookId}" id="bookId" name="bookId" disabled></td>
+					</tr>
+					<tr>
+					  <td>作者</td>
+						<td><input th:value="${book.bookAuthor}" disabled></td>
+					</tr>
+					<tr>
+					  <td>共享人</td>
+						<td><input th:value="${book.userName}" disabled></td>
+					</tr>
+					<tr>
+						<td>共享人编号</td>
+						<td><input th:value="${book.bookOwner}" name="userId" id="userId" disabled></td>
+					</tr>
+					<tr>
+					  <td>数量</td>
+						<td><input th:value="${book.bookCount}" disabled></td>
+					</tr>
+					<tr>
+						<td>描述</td>
+						<td><input th:value="${book.bookDetail}" disabled></td>
+					</tr>
+					<tr>
+						<td>联系方式</td>
+						<td><input th:value="${book.userTell}" disabled></td>
+					</tr>
+					<tr>
+						<td>图书位置</td>
+						<td><input th:value="${book.bookLocation}" disabled></td>
+					</tr>
+
+
+
+					<tr th:switch="${session.currentUser.userCredit}" id="rentBtn">
+						<td th:case="1"><button class="btn-success center-block"><a style="color: white;" id="rentBook">我要租赁</a></button></td>
+						<td th:case="0">存在违章记录<button class="warning">无</button> </td>
+						<td><a href="/selectBookList" class="success">返回</a> </td>
+					</tr>
+                  </tbody>
+                </table>
+
+			<div class="form-group" id="rentDate" hidden>
+				<label>请选择租赁日期</label>
+				<div class="row">
+					<div class="input-daterange input-group js-datepicker col-xs-6" data-auto-close="false" data-date-format="yyyy-mm-dd">
+						<input class="form-control" type="text" id="rentBeginDate" name="rentBeginDate" placeholder="从">
+						<span class="input-group-addon"><i class="mdi mdi-chevron-right"></i></span>
+						<input class="form-control" type="text" id="rentFinishDate" name="rentFinishDate" placeholder="至">
+					</div>
+					<div class="col-xs-3">
+						<input class="form-control" type="button" value="租赁" id="rentSubmit">
+					</div>
+					<div class="col-xs-3">
+						<input class="form-control" type="button" value="取消" id="rentCancel">
+					</div>
+				</div>
+			</div>
+</div>
+</main>
+<!--main 结束-->
+
+	</div>
+	</div>
+        <!--js资源-->
+        <div th:replace="common/js"></div>
+
+		<!--日期选择插件-->
+		<script src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+		<script src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+		<script type="text/javascript" src="js/main.min.js"></script>
+		<script type="text/javascript">
+			// 单独选择年份
+			jQuery('#example-datepicker-year').each(function() {
+				var $input = jQuery(this);
+				$input.datepicker({
+					startView: 'decade',
+					endView: 'decade',
+					maxViewMode: 'decade',
+					minViewMode: 'decade',
+					weekStart: 1,
+					autoclose: true,
+					todayHighlight: true,
+					language: 'zh-CN',
+				});
+			});
+			// 单独选择月份
+			jQuery('#example-datepicker-month').each(function() {
+				var $input = jQuery(this);
+				$input.datepicker({
+					startView: 'month',
+					endView: 'month',
+					maxViewMode: 'year',
+					minViewMode: 'year',
+					weekStart: 1,
+					autoclose: true,
+					todayHighlight: true,
+					language: 'zh-CN',
+				});
+			});
+		</script>
+
+
+
+		
+		<script type="text/javascript">
+			//我要租赁按钮点击
+			$("#rentBook").click(function () {
+				$("#rentDate").show();
+				$("#rentBtn").hide();
+			})
+
+			$("#rentCancel").click(function () {
+				$("#rentDate").hide();
+				$("#rentBtn").show();
+			})
+
+
+		</script>
+		<!--租赁-->
+		<script type="text/javascript">
+			$('#rentSubmit').click(function () {
+
+			if(confirm("确认租赁吗？")){
+				$.ajax({
+					type: "POST",
+					url: "/bookRent",
+					data: {
+						userId:$("#userId").val(),
+						rentBeginDate:$("#rentBeginDate").val(),
+						rentFinishDate:$("#rentFinishDate").val(),
+						bookId:$("#bookId").val()
+					},
+					dataType: "json",
+					success:function(data){  //回调函数：数据请求成功之后调用
+						alert("租赁成功！");
+						// 前往我的租赁页面
+						$(location).attr('href', '/myRentList');
+					},
+					error:function(){
+						alert("租赁失败，请重试!");
+					}
+				});
+			}
+			})
+		</script>
+
+	</body>
+
+</html>
